@@ -1,0 +1,21 @@
+directors:
+  input_file: "input"
+  output_file: "output"
+export_to: "json"
+
+columns_aula2:
+  author:
+    - author
+  title:
+    - title 
+  keywords:
+    - keywords
+  abstract:
+    - abstract
+  year:
+    - year
+  type_publication: 
+    - type_publication
+    - ENTRYTYPE
+  doi:
+    - doi
