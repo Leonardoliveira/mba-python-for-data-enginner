@@ -28,6 +28,9 @@ if __name__ == "__main__":
     find_scimago_value = config["find"]["scimago_value"]
     file_class_3 = config["export_aula3"]["name"]
     export_to = config["export_aula3"]["ext"]
+    title_jcs = config["column_title"]["jcs"]
+    title_scm = config["column_title"]["scm"]
+    title_default = config["columns_aula3"]["title"][0]
 
     """ EXTRACT AULA 3"""
     # carrega a lista de arquivos alvos do ETL
@@ -44,46 +47,45 @@ if __name__ == "__main__":
 
         # padronizar coluna title
         if file[0:3] == "jcs":
-            df_file.rename(columns = {"Full Journal Title": "title"}, inplace = True)
+            title_source = title_jcs
         else:
-            df_file.rename(columns = {"Title": "title"}, inplace = True)
+            title_source = title_scm
 
+        df_file.rename(columns = {title_source: title_default}, inplace = True)
+        
         # convertendo dados da coluna para maiusculo
-        df_file['title'] = df_file['title'].str.upper()
+        df_file[title_default] = df_file[title_default].str.upper()
 
         # guarda o df na lista
         lista_df.append(df_file)
 
     #  join dfs por title criando novo df
-    df_class_3 = pd.merge(lista_df[0], lista_df[1], how = 'inner', on = 'title')
+    df_class_3 = pd.merge(lista_df[0], lista_df[1], how = 'inner', on = title_default)
 
     # padronizar colunas
     df_class_3 = select_col(df_class_3, columns_aula3)
 
     # deduplicacao de dados usando todas colunas
     df_class_3.drop_duplicates(keep = "first", inplace = True)
-    df_class_3.to_excel('output/df_class_3' + '.xlsx', index = False)
-
-    """ EXTRACT AULA 2 """
-    # ler CSV da aula 2
-    df_class_2 = read_file_csv(output_file, file_class_2 + "." + import_ext) 
+    df_class_3.to_excel("output/df_class_3.xlsx", index = False)
     
-    """ TRANSFORMATION AULA 2 """
+    # Extracao, limpesa e transformacao dos dados da aula 2
+    df_class_2 = read_file_csv(output_file, file_class_2 + "." + import_ext) 
     df_class_2.drop_duplicates(keep = "first", inplace = True)
 
-    #convertendo todas strings para maiusculo
+    # convertendo todas strings para maiusculo
     for col in df_class_2.columns:
         if df_class_2[col].dtype == "object" and col != "doi":
             df_class_2[col] = df_class_2[col].str.upper()
    
     df_class_2.fillna("BD", inplace = True)
 
-    df_class_2.to_excel('output/df_class_2' + '.xlsx', index = False)
+    df_class_2.to_excel('output/df_class_2.xlsx', index = False)
     
-    # unir com a aula 3
+    # uniao da fonte da aula 2 com a da aula 3
     df_final = pd.merge(df_class_2, df_class_3, how = 'left', on = 'title')
 
-    # filtrar
+    # filtrando
     if find_title is not None:
         find_title = df_final.title.str.contains(find_title)
         df_final = df_final.loc[find_title]
@@ -116,8 +118,7 @@ if __name__ == "__main__":
         find_scimago_value = df_final.scimago_value == find_scimago_value
         df_final = df_final.loc[find_scimago_value]  
                
-
-    df_final.to_excel('output/df_final' + '.xlsx', index = False)
+    df_final.to_excel('output/df_final.xlsx', index = False)
     print("Resultado {} linhas encontradas".format(df_final.shape[0]))
 
     # gerar arquivo final no formato configurado

@@ -29,15 +29,17 @@ columns_aula2:
 
 columns_aula3:
   title:
-    - title
-    - Full Journal Title
-    - Title
+    - title   
   jcr_value:
     - jcr_value
     - SJR
   scimago_value:
     - scimago_value
     - Journal Impact Factor
+
+column_title:
+  jcs: Full Journal Title
+  scm: Title    
 
 find:
   title: BIG
