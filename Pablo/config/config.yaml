@@ -46,9 +46,11 @@ find:
   keywords: DATA
   abstract: BIG DATA
   year: 2020
-  type_publication: INCOLLECTION
+  type_publication: 
   doi: doi.org
-  jcr_value: 0,774
-  scimago_value: "2.128"
+  jcr_value: 
+  scimago_value: 
+
+show_excel: true  
 
    

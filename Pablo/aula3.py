@@ -1,51 +1,27 @@
 import os
 import pandas as pd
-from library import get_config
 from library import get_files
 from library import read_file_csv
 from library import select_col
 from library import write_file
+from config.config import *
 
 if __name__ == "__main__":
 
     os.system('cls')
 
-    # carrega parametros
-    config = get_config()
-
-    input_file = config["directors"]["input_file"]
-    output_file = config["directors"]["output_file"]
-    columns_aula3 = config["columns_aula3"]
-    file_class_2 = config["export_aula2"]["name"]
-    import_ext = config["export_aula2"]["ext"]
-    find_title = config["find"]["title"]
-    find_keywords = config["find"]["keywords"]
-    find_abstract = config["find"]["abstract"]
-    find_year = config["find"]["year"]
-    find_type_publication = config["find"]["type_publication"]
-    find_doi = config["find"]["doi"]
-    find_jcr_value = config["find"]["jcr_value"]
-    find_scimago_value = config["find"]["scimago_value"]
-    file_class_3 = config["export_aula3"]["name"]
-    export_to = config["export_aula3"]["ext"]
-    title_jcs = config["column_title"]["jcs"]
-    title_scm = config["column_title"]["scm"]
-    title_default = config["columns_aula3"]["title"][0]
-
-    """ EXTRACT AULA 3"""
-    # carrega a lista de arquivos alvos do ETL
+    print("\nCarregando a lista de arquivos CSV na pasta {} ...".format(input_file))
     files = get_files(input_file, "CSV")
 
     lista_df = []
 
-    """ TRANSFORMATION AULA 3"""
-    # para cada arquivo repetir
+    print("\nIniciando a transformacao ...")
     for file in files:
 
-        # ler
+        print("\nLendo fonte de dados {} ...".format(file))
         df_file = read_file_csv(input_file, file)
 
-        # padronizar coluna title
+        print("Padronizando coluna {} ...".format(title_default))
         if file[0:3] == "jcs":
             title_source = title_jcs
         else:
@@ -53,39 +29,47 @@ if __name__ == "__main__":
 
         df_file.rename(columns = {title_source: title_default}, inplace = True)
         
-        # convertendo dados da coluna para maiusculo
+        print("Padronizando para maiusculo ...")
         df_file[title_default] = df_file[title_default].str.upper()
 
-        # guarda o df na lista
         lista_df.append(df_file)
 
-    #  join dfs por title criando novo df
+        if show_excel:
+            print("Gerando planilha excel para conferencia do {} ...".format(file))
+            df_file.to_excel("output/etapa1_" + file[0:3] + ".xlsx", index = False)
+
+    print("\nUnindo fonte de dados ...")
     df_class_3 = pd.merge(lista_df[0], lista_df[1], how = 'inner', on = title_default)
 
-    # padronizar colunas
+    print("Selecionando colunas de acordo com escopo ...")
     df_class_3 = select_col(df_class_3, columns_aula3)
 
-    # deduplicacao de dados usando todas colunas
+    print("Limpando dados repetidos ...")
     df_class_3.drop_duplicates(keep = "first", inplace = True)
-    df_class_3.to_excel("output/df_class_3.xlsx", index = False)
+
+    if show_excel:
+        print("Gerando planilha excel com dados unidos para conferencia ...")
+        df_class_3.to_excel("output/etapa2_join.xlsx", index = False)
     
-    # Extracao, limpesa e transformacao dos dados da aula 2
-    df_class_2 = read_file_csv(output_file, file_class_2 + "." + import_ext) 
+    print("\nLendo arquivo de dados da aula 2 {} ...".format(file_class_2))
+    df_class_2 = read_file_csv(output_file, file_class_2) 
     df_class_2.drop_duplicates(keep = "first", inplace = True)
 
-    # convertendo todas strings para maiusculo
+    print("Padronizando para maiusculo ...")
     for col in df_class_2.columns:
         if df_class_2[col].dtype == "object" and col != "doi":
             df_class_2[col] = df_class_2[col].str.upper()
    
     df_class_2.fillna("BD", inplace = True)
 
-    df_class_2.to_excel('output/df_class_2.xlsx', index = False)
+    if show_excel:
+        print("Gerando planilha excel com dados de {} ...".format(file_class_2))
+        df_class_2.to_excel('output/etapa3_aula2.xlsx', index = False)
     
-    # uniao da fonte da aula 2 com a da aula 3
+    print("Unindo dados da aula 2 com os da aula 3 ...")
     df_final = pd.merge(df_class_2, df_class_3, how = 'left', on = 'title')
 
-    # filtrando
+    print("\nFiltrando dados ...")
     if find_title is not None:
         find_title = df_final.title.str.contains(find_title)
         df_final = df_final.loc[find_title]
@@ -118,12 +102,17 @@ if __name__ == "__main__":
         find_scimago_value = df_final.scimago_value == find_scimago_value
         df_final = df_final.loc[find_scimago_value]  
                
-    df_final.to_excel('output/df_final.xlsx', index = False)
-    print("Resultado {} linhas encontradas".format(df_final.shape[0]))
+    print("\nResultado {} linhas encontradas".format(df_final.shape[0]))
 
     # gerar arquivo final no formato configurado
     write_file(df_final, output_file, file_class_3, export_to)
     print("\nArquivo {} exportado no formato {} e disponivel na pasta {}"
     .format(file_class_3, export_to, output_file))
+
+    if show_excel:
+        print("Gerando planilha excel dos dados do final do processo ...")
+        df_final.to_excel('output/etapa4_final.xlsx', index = False)
+    
+    print("\nConcluido :)")
                         
     
