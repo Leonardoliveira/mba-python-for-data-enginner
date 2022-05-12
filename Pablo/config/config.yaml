@@ -1,7 +1,10 @@
 directors:
   input_file: "input"
-  output_file: "output"
-export_to: "json"
+  output_file: "output" 
+
+export_aula2:
+  ext: "csv"
+  name: "data_class_2"
 
 columns_aula2:
   author:
@@ -19,3 +22,26 @@ columns_aula2:
     - ENTRYTYPE
   doi:
     - doi
+
+columns_aula3:
+  title:
+    - title
+    - Full Journal Title
+    - Title
+  jcr_value:
+    - jcr_value
+    - SJR
+  scimago_value:
+    - scimago_value
+    - Journal Impact Factor
+
+find:
+  title: BIG
+  keywords: Big 
+  abstract: The
+  year:
+  type_publication:
+  doi:
+  jcr_value:
+  scimago_value:
+   
