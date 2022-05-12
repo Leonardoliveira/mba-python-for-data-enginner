@@ -76,7 +76,7 @@ def get_config() -> dict:
 
 
 # funcao para gerar um arquivo texto no formato dedinido no arquivo de configuração
-def gerar_arquivo(df_final, folder_output, file_name, ext) -> None:
+def write_file(df_final, folder_output, file_name, ext) -> None:
 
   arquivo_saida = "{}/{}.{}".format(folder_output, file_name, ext)
 
@@ -87,7 +87,7 @@ def gerar_arquivo(df_final, folder_output, file_name, ext) -> None:
       arquivo.write(dados_arquivo)
 
   elif ext == "csv":
-    df_final.to_csv(arquivo_saida, sep = ";", header = True)
+    df_final.to_csv(arquivo_saida, sep = ";", header = True, index=False)
 
   elif ext == "yaml":
     dict_final = df_final.to_dict()

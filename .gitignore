@@ -4,7 +4,9 @@ __pycache__/
 *$py.class
 desktop.ini
 teste.py
-*.xlsx
+.csv
+.xlsx
+Pablo/output
 
 # C extensions
 *.so

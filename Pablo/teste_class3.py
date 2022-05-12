@@ -62,29 +62,18 @@ if __name__ == "__main__":
    
     # ler CSV da aula 2
     df_class_2 = read_file_csv(output_file, file_class_2 + "." + export_to) 
-    df_class_2['title'] = df_class_2['title'].str.upper()
-    df_class_2.drop_duplicates(keep = "first", inplace = True)
-    df_class_2.fillna("BD", inplace = True)
 
-    df_class_2.to_excel('output/df_class_2' + '.xlsx', index = False)
+    for col in df_class_2.columns:
+        if df_class_2[col].dtype == "object":
+            df_class_2[col] = df_class_2[col].str.upper()
+
+
+    """ for col in df_class_2.columns:
+        if df_class_2[col].str:
+            df_class_2[col] = df_class_2[col].str.upper()
+
+        print(col) """
+        
     
-    # unir com a aula 3
-    df_final = pd.merge(df_class_2, df_class_3, how = 'left', on = 'title')
-
-    # filtrar
-    if find_title is not None:
-        find_title = df_final.title.str.contains(find_title)
-        df_final = df_final.loc[find_title]
-
-    if find_keywords is not None:
-        find_keywords = df_final.keywords.str.contains(find_keywords)
-        df_final = df_final.loc[find_keywords]
     
-    if find_abstract is not None:
-        find_abstract = df_final.abstract.str.contains(find_abstract)
-        df_final = df_final.loc[find_abstract]             
-
-    df_final.to_excel('output/df_final' + '.xlsx', index = False)
-    print("Resultado {} linhas encontradas".format(df_final.shape[0]))   
-                        
     

@@ -42,6 +42,10 @@ Solução
     
 5 - itens 4 e 5 do escopo a definir  
 
+6 - Extras: 
+        [ok] tudo maiusculo
+
+
         
 
 

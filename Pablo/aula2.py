@@ -2,7 +2,7 @@ import pandas as pd
 from library import get_files
 from library import read_file_bib
 from library import select_col
-from library import gerar_arquivo
+from library import write_file
 from library import get_config
 
 
@@ -41,6 +41,6 @@ if __name__ == "__main__":
         print("DF Final {}".format(df_final.shape))
 
     # gerar arquivo final no formato configurado
-    gerar_arquivo(df_final, output_file, file_name_exp, export_to)
+    write_file(df_final, output_file, file_name_exp, export_to)
     print("\nArquivo {} exportado no formato {} e disponivel na pasta {}"
     .format(file_name_exp, export_to, output_file))

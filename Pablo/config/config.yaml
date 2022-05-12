@@ -6,6 +6,10 @@ export_aula2:
   ext: "csv"
   name: "data_class_2"
 
+export_aula3:
+  ext: "yaml"
+  name: "data_class_3"  
+
 columns_aula2:
   author:
     - author
@@ -37,11 +41,12 @@ columns_aula3:
 
 find:
   title: BIG
-  keywords: Big 
-  abstract: The
-  year:
-  type_publication:
-  doi:
-  jcr_value:
-  scimago_value:
+  keywords: DATA
+  abstract: BIG DATA
+  year: 2020
+  type_publication: INCOLLECTION
+  doi: doi.org
+  jcr_value: 0,774
+  scimago_value: "2.128"
+
    
