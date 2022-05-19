@@ -38,16 +38,23 @@ show_excel = config["show_excel"]
  #"abstract=" + config["abstract"]
 # "&apikey=" + config["apikey"][0]
 
-#query
-title = config["query"]["article_title"]
-author = config["query"]["author"]
-abstract = config["query"]["abstract"]
+#API IEEE
+format = "json"
+max_records = 50
+start_record = 1
+sort_order = "asc"
+sort_field = "article_number"
 
 # database:
 host = config["srv_database"]["srv_host"]
 database = config["srv_database"]["database"]
 user = config["srv_database"]["user"]
 pwd = config["srv_database"]["password"]
+
+#Api SD
+count = 50
+startPage = 1
+
   
 
 

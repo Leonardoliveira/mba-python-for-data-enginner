@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import yaml
 import bibtexparser
+import psycopg2 as psg
 
 # Função para criar um lista dos arquivos BibTex existentes no diretório de entrada 
 def get_files(dir, ext) -> list:
@@ -96,6 +97,73 @@ def write_file(df_final, folder_output, file_name, ext) -> None:
       yaml.dump(dict_final, file)
 
   return None
+
+def explode_authors(column_name) -> list:
+
+  lista_coluna = []
+
+  for item in column_name.values:
+      for val in item.values(): 
+          authors_names = ""
+          for item2 in val:
+              for key2,val2 in item2.items():
+                  if key2 == "full_name":
+                      authors_names = authors_names + val2 + ", "
+          
+          authors_names = authors_names[0:-2] 
+          lista_coluna.append(authors_names)
+  return lista_coluna
+
+def explode_keywords(column_name) -> list:
+  lista_coluna = []
+  for item in column_name.values:
+      keywords_itens = ""
+      for val in item.values():
+          for val2 in val.values():
+              for item2 in val2:
+                  keywords_itens = keywords_itens + item2 + ", "
+                  
+      keywords_itens = keywords_itens[0:-2] 
+      lista_coluna.append(keywords_itens)
+  return lista_coluna
+
+def clean_year(column):
+  new_col = []
+  for year in column:
+    new_year = year[0:4]
+    new_col.append(new_year)  
+  return new_col
+
+# database
+def insert_database(host, database, user, pwd, table_name):
+  try:
+
+    connection = psg.connect(
+      host = host,
+      database = database,
+      user = user,
+      password = pwd)
+
+    cursor = connection.cursor()
+
+    for row in table_name.values:
+      sql = """INSERT INTO publications (author, title, keywords, abstract, year, type_publication, doi ) 
+            VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')""".format(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+      
+      cursor.execute(sql)
+
+      connection.commit()
+
+  except (Exception, psg.DatabaseError) as error:
+    msg = "\fError {error}, {sql}"    
+
+  finally:
+    if connection:
+      cursor.close()
+      connection.close()
+      msg = "PostgreSQL connection is closed"
+  
+  return msg
 
 
 

@@ -40,23 +40,29 @@ columns_aula3:
 columns_aula4:
   author:
     - author
-    - authors
+    - dc:creator
+    - authors   
   title:
-    - title 
+    - title
+    - dc:title
   keywords:
     - keywords
     - index_terms
+    - dc:title
   abstract:
     - abstract
+    - dc:title
   year:
     - year
     - publication_year
+    - load-date
   type_publication: 
     - type_publication
-    - ENTRYTYPE
     - content_type
+    - prism:publicationName
   doi:
-    - doi    
+    - doi
+    - dc:identifier    
 
 column_title:
   jcs: Full Journal Title
@@ -74,15 +80,19 @@ find:
 
 show_excel: True
 
-api:
-  - https://ieeexploreapi.ieee.org/api/v1/search/articles?
-  - https://api.elsevier.com/content/search/sciencedirect?
+api_ieee: 
+  uri: https://ieeexploreapi.ieee.org/api/v1/search/articles?
+  #apikey: whpwmy7cp2v2gbeq5pkhfgas #jonathan ieee
+  apikey: z34aqfzkvu36wg248cx2cf8z #pablo ieee
+  article_title: bigdata
+  author: Ferosh+Jacob
+  abstract: BigData
 
-apikey:
-  - whpwmy7cp2v2gbeq5pkhfgas #jonathan
-  - z34aqfzkvu36wg248cx2cf8z #pablo
-  - 7f59af901d2d86f78a1fd60c1bf9426a
-
+api_sd:
+  uri: https://api.elsevier.com/content/search/sciencedirect?
+  #apiKey: e93680b6112f0f801bbd758197aa5cce  
+  apiKey: 7f59af901d2d86f78a1fd60c1bf9426a # sd
+  query: bigdata
 
 
 # database
@@ -92,10 +102,7 @@ srv_database:
   user: postgres
   password: virtual
 
-query:
-  article_title: bigdata
-  author: Michael+Yu
-  abstract: BigData
+
 
 
 
