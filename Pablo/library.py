@@ -66,7 +66,7 @@ def select_col(df_geral, columns_out) -> pd.DataFrame:
   return new_df
 
 
-# funcao para ler o parametro "export_to" setado no arquivo externo YAML
+# funcao para ler o arquivo externo YAML
 def get_config() -> dict:
 
   with open('config\config.yaml', 'r') as config:
@@ -96,3 +96,7 @@ def write_file(df_final, folder_output, file_name, ext) -> None:
       yaml.dump(dict_final, file)
 
   return None
+
+
+
+ 

@@ -5,6 +5,7 @@ from library import read_file_csv
 from library import select_col
 from library import write_file
 from config.config import *
+from library import * 
 
 if __name__ == "__main__":
 
@@ -19,7 +20,7 @@ if __name__ == "__main__":
     for file in files:
 
         print("\nLendo fonte de dados {} ...".format(file))
-        df_file = read_file_csv(input_file, file)
+        df_file = read_file_csv(input_file, file) 
 
         print("Padronizando coluna {} ...".format(title_default))
         if file[0:3] == "jcs":

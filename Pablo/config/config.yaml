@@ -7,7 +7,7 @@ export_aula2:
   name: "data_class_2"
 
 export_aula3:
-  ext: "yaml"
+  ext: "json"
   name: "data_class_3"  
 
 columns_aula2:
@@ -37,6 +37,27 @@ columns_aula3:
     - scimago_value
     - Journal Impact Factor
 
+columns_aula4:
+  author:
+    - author
+    - authors
+  title:
+    - title 
+  keywords:
+    - keywords
+    - index_terms
+  abstract:
+    - abstract
+  year:
+    - year
+    - publication_year
+  type_publication: 
+    - type_publication
+    - ENTRYTYPE
+    - content_type
+  doi:
+    - doi    
+
 column_title:
   jcs: Full Journal Title
   scm: Title    
@@ -51,6 +72,33 @@ find:
   jcr_value: 
   scimago_value: 
 
-show_excel: true  
+show_excel: True
+
+api:
+  - https://ieeexploreapi.ieee.org/api/v1/search/articles?
+  - https://api.elsevier.com/content/search/sciencedirect?
+
+apikey:
+  - whpwmy7cp2v2gbeq5pkhfgas #jonathan
+  - z34aqfzkvu36wg248cx2cf8z #pablo
+  - 7f59af901d2d86f78a1fd60c1bf9426a
+
+
+
+# database
+srv_database:
+  srv_host: localhost
+  database: godata
+  user: postgres
+  password: virtual
+
+query:
+  article_title: bigdata
+  author: Michael+Yu
+  abstract: BigData
+
+
+
+#dt = "https://api.elsevier.com/content/search/sciencedirect?start=10&count=50&query=bigdata&apiKey=7f59af901d2d86f78a1fd60c1bf9426a"  
 
    
