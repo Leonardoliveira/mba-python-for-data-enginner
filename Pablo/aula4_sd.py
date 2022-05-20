@@ -35,6 +35,7 @@ if __name__ == "__main__":
             df_articles = pd.DataFrame(articles)
             df_articles = select_col(df_articles, columns_aula4)
             df_articles["year"] = clean_year(df_articles["year"])
+            df_articles = df_articles.replace("'", "", regex=True)
             df_final_sd = pd.concat([df_final_sd, df_articles])
 
             if total_records == 1:

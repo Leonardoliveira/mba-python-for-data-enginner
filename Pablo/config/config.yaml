@@ -84,8 +84,8 @@ api_ieee:
   uri: https://ieeexploreapi.ieee.org/api/v1/search/articles?
   #apikey: whpwmy7cp2v2gbeq5pkhfgas #jonathan ieee
   apikey: z34aqfzkvu36wg248cx2cf8z #pablo ieee
-  article_title: bigdata
-  author: Ferosh+Jacob
+  article_title: #bigdata
+  author: #Ferosh+Jacob
   abstract: BigData
 
 api_sd:

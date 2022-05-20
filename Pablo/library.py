@@ -145,23 +145,23 @@ def insert_database(host, database, user, pwd, table_name):
       password = pwd)
 
     cursor = connection.cursor()
-
+    print(table_name.shape)
     for row in table_name.values:
       sql = """INSERT INTO publications (author, title, keywords, abstract, year, type_publication, doi ) 
             VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')""".format(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
       
       cursor.execute(sql)
-
+      
       connection.commit()
 
   except (Exception, psg.DatabaseError) as error:
-    msg = "\fError {error}, {sql}"    
+    msg = [error, sql]
 
   finally:
     if connection:
       cursor.close()
       connection.close()
-      msg = "PostgreSQL connection is closed"
+      msg = ["PostgreSQL connection is closed"]
   
   return msg
 
