@@ -6,7 +6,11 @@ desktop.ini
 teste.py
 .csv
 .xlsx
+.yaml
 Pablo/output
+Pablo/config/config.yaml
+config.yaml
+venv/
 
 # C extensions
 *.so
